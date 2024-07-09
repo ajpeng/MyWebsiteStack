@@ -47,5 +47,4 @@ yarn-error.log*
 .contentlayer
 
 #fly.io
-.fly.toml
-fly.*.toml
+fly.toml
