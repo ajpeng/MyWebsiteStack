@@ -17,8 +17,6 @@ ARG YARN_VERSION=3.6.1
 RUN corepack enable && \
     yarn set version ${YARN_VERSION}
 
-
-# Throw-away build stage to reduce size of final image
 FROM base as build
 
 # Install packages needed to build node modules
@@ -27,16 +25,13 @@ RUN apt-get update -qq && \
 
 # Install node modules
 COPY --link .yarnrc.yml package.json yarn.lock ./
-RUN yarn install --immutable --production=false
+RUN yarn
 
 # Copy application code
 COPY --link . .
 
 # Build application
 RUN yarn run build
-
-# Remove development dependencies
-RUN yarn install --production=true
 
 
 # Final stage for app image
