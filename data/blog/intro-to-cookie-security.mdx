@@ -1,0 +1,97 @@
+---
+title: Introduction to Cookies and Security
+date: '2024-07-08'
+tags: ['cookies', 'security']
+draft: false
+summary: 'Learn about the history of cookies and how to use it securily on the web'
+---
+
+#Cookies and Cross-Site Scripting (XSS): What You Need to Know
+
+In today's web-driven world, understanding the intricacies of cookies and cross-site scripting (XSS) is crucial for both developers and users. Let's dive into these topics and explore their significance in web security.
+
+## The Birth of Cookies
+
+Cookies have been an integral part of our web browsing experience for decades. But did you know they were invented relatively recently?
+
+- In 1994, Lou Montulli, an engineer at Netscape, came up with the idea of using small text files to store user information on the client side.
+- Surprisingly, it took 17 years for cookies to get an official specification.
+- Several attempts were made (in 1997 and 2000) to standardize cookies, but they introduced incompatible changes.
+- Finally, in 2011, a successful effort resulted in RFC 6265.
+
+This ad-hoc development has led to some interesting quirks and issues over the years.
+
+## What Are Cookies and Why Do We Need Them?
+
+Cookies are small pieces of data sent by a server with a response to a client. They typically look like this:
+
+```
+Set-Cookie: theme = dark;
+```
+
+### The Power of Sessions
+
+Cookies play a crucial role in implementing sessions on the server side. Sessions allow websites to:
+
+1. Remember your login status
+2. Maintain shopping carts
+3. Track user behavior
+
+## Ambient Authority: The Key to Access Control
+
+When it comes to regulating who can view resources or take actions on a website, we use access control mechanisms. Ambient authority is a type of access control based on a global and persistent property of the requester.
+
+There are four types of ambient authority on the web:
+
+1. Cookies (most common and versatile)
+2. IP checking
+3. Built-in HTTP authentication (rarely used)
+4. Client certificates (rarely used)
+
+## The Dark Side: Cross-Site Scripting (XSS)
+
+While cookies are essential for a smooth web experience, they can also be exploited through vulnerabilities like cross-site scripting (XSS).
+
+### What is XSS?
+
+XSS is a type of code injection vulnerability where untrusted user data unexpectedly becomes code. In the case of XSS, the unexpected code is JavaScript in an HTML document.
+
+### The Dangers of XSS
+
+If an attacker successfully exploits an XSS vulnerability, they can:
+
+- View and steal the user's cookies
+- Send any HTTP request to the site using the user's cookies
+
+### Types of XSS Attacks
+
+1. **Reflected XSS**: The attack code is placed in the HTTP request itself.
+2. **Stored XSS**: The attack code is persisted in the database and served to multiple users.
+
+## Defending Against XSS
+
+Protecting against XSS requires a multi-layered approach:
+
+1. **HttpOnly Cookie Attribute**: Prevent cookies from being read by JavaScript in the user's browser.
+
+```
+Set-Cookie: key=value; HttpOnly
+```
+
+2. **Content Security Policy (CSP)**: Limit the damage that can be done even if attacker code is running in the user's browser.
+
+3. **strict-dynamic**: A CSP directive that propagates trust to scripts loaded by trusted scripts.
+
+```
+Content-Security-Policy: script-src 'strict-dynamic' 'nonce-abc123...'
+```
+
+4. **Input Validation and Sanitization**: Always validate and sanitize user input before using it in your web application.
+
+## Conclusion
+
+Understanding cookies and XSS is crucial for building secure web applications. By implementing proper security measures and staying vigilant, we can enjoy the benefits of cookies while mitigating the risks of XSS attacks.
+
+For more information on XSS and web security, check out the [OWASP Cross-Site Scripting (XSS) page](https://owasp.org/www-community/Types_of_Cross-Site_Scripting).
+
+Remember, web security is an ongoing process. Stay informed, stay secure!
