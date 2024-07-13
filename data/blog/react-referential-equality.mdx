@@ -1,0 +1,44 @@
+---
+title: How does React know when to re-render
+date: '2024-07-13'
+tags: ['react', 'frontend']
+draft: true
+summary: Referential equality in JavaScript and it's importance in React's rendering behavior.
+---
+
+One of the most important steps to understanding how React works is mastering the concept of **Referential equality**. Whenever you create a variable in JavaScript, that variable can either be stored as a **primitive** value or **reference** value. If the value stored is either a number, string, boolean, undefined, null or symbol, it is a **primitive** value. For everything else, it is a **reference**.
+
+```js
+// Primatives
+let name = 'Harry Potter' // string
+let age = 17 // number
+let isWizard = true // boolean
+let location // undefined
+let resposne = null // null
+let counter = Symbol('h') // symbol
+```
+
+That makes objects, arrays, functions and everything else a reference.
+
+```js
+// References
+let headmaster = { name: 'Albus Dumbledore', school: 'Hogwarts' }
+let friends = ['Minerva McGonagall', 'Severus Snape', 'Rubeus Hagrid']
+let volume = (length, width, height) => length * width * height
+```
+
+So what does this have to with React? If you recall, the React re-renders the component that whenever the state changes. What is actually happening is that React is using [Object.is?]([Object.is() - JavaScript | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is)) to compare whether two objects are either the same.
+
+Understanding **Referential equality**, it becomes clear that if two reference values point to different objects in memory, they are perceived as unequal, even if the objects contain the same data. This is particularly crucial when assessing whether to re-render a component in React, as changes in state or props often include objects and arrays.
+
+```js
+// Reference equality check
+let professor1 = { name: 'Severus Snape' }
+let professor2 = { name: 'Severus Snape' }
+
+console.log(Object.is(professor1, professor2)) // false - different references
+```
+
+In the example above, `professor1` and `professor2` may look identical, but since they are two different objects in memory, they are not equal according to the `===` operator.
+
+React's reconciliation process uses this principle to decide if a component's state or props have changed. If the reference to the state or props is the same as before, React assumes nothing has changed, and therefore, it may skip re-rendering that component.
